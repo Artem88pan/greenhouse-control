@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+.env.example
+.idea/
+dist/
+**/poetry.lock
+
+.env
