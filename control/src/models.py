@@ -1,17 +1,23 @@
+# control/src/models.py
+from __future__ import annotations
 
 from typing import Optional
 from uuid import UUID, uuid4
-from sqlmodel import SQLModel, Field, Relationship
+
+from sqlmodel import SQLModel, Field
+
 
 class Region(SQLModel, table=True):
-    __tablename__ = "regions"
+    __tablename__ = "region"
+
     id: UUID = Field(default_factory=uuid4, primary_key=True, index=True)
-    name: str = Field(index=True, min_length=1, max_length=120)
-    greenhouses: list["Greenhouse"] = Relationship(back_populates="region")
+    name: str
+
 
 class Greenhouse(SQLModel, table=True):
-    __tablename__ = "greenhouses"
+    __tablename__ = "greenhouse"
+
     id: UUID = Field(default_factory=uuid4, primary_key=True, index=True)
-    name: str = Field(index=True, min_length=1, max_length=120)
-    region_id: UUID = Field(foreign_key="regions.id", index=True)
-    region: Optional[Region] = Relationship(back_populates="greenhouses")
+    name: str
+    # ВАЖНО: foreign_key указывает на 'region.id' — имя совпадает с __tablename__ у Region
+    region_id: UUID = Field(foreign_key="region.id", index=True)
