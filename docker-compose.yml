@@ -1,0 +1,35 @@
+
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: control_db
+      POSTGRES_USER: control_user
+      POSTGRES_PASSWORD: control_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  control:
+    build: ./control
+    env_file: .env
+    depends_on: [db]
+    ports:
+      - "8000:8000"
+
+  greenhouse-mock:
+    build: ./greenhouse-mock
+    env_file: .env
+    ports:
+      - "8101:8000"
+
+  state-mock:
+    build: ./state-mock
+    env_file: .env
+    ports:
+      - "8102:8000"
+
+volumes:
+  db_data:
